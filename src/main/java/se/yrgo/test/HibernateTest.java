@@ -21,19 +21,15 @@ public class HibernateTest {
 		// Uppgift 1
 		System.out.println("________Uppgift 1________");
 
-		// Jag satt väldigt länge med denna uppgift och förstod inte 
-		// hur jag skulle lösa det med member of när relationerna är så långt ifrån varandra 
-		// (student har två tabeller mellan sig och subject)
-
-		// så jag löste det på klassiskt sql vis istället. Snällasnälla ge mig godkänt för det :) :) 
-
-		List<String> studentsOfScience = em.createNativeQuery(
-				"SELECT s.name FROM student AS s JOIN tutor AS t ON s.tutor_fk = t.id JOIN subject_tutor AS st ON t.id = st.tutors_id JOIN subject AS su ON st.subjectsToTeach_ID = su.id WHERE su.subjectName = 'Science'")
-				.getResultList();
+		Subject science = em.find(Subject.class, 2);
+		Query q = em.createQuery(
+				"select tutor.teachingGroup from Tutor as tutor where :subject member of tutor.subjectsToTeach");
+		q.setParameter("subject", science);
+		List<Student> studentsOfScience = q.getResultList();
 
 		System.out.println("Students that have a tutor who knows science: ");
-		for (String student : studentsOfScience) {
-			System.out.println(student);
+		for (Student s : studentsOfScience) {
+			System.out.println(s.getName());
 		}
 
 		// Uppgift 2

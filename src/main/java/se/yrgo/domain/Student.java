@@ -39,6 +39,10 @@ public class Student
         this.address = newAddress;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public String toString() {
         return name + " lives at: " + address;
     }
